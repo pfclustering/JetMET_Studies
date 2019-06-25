@@ -14,7 +14,7 @@
     {
 
     if( argc<4 ) {
-      std::cout << "Usage: ./my_analyzer [productionName] [datasetName]" << std::endl;
+      std::cout << "Usage: ./my_analyzer [productionName] [datasetName] [targetDirectory]" << std::endl;
     exit(1);
     }
     

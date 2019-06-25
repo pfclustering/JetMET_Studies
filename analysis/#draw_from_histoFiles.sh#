@@ -1,0 +1,13 @@
+#!/bin/bash
+
+prodName1=$1
+prodName2=$3
+
+datasetName1=$2
+datasetName2=$4
+
+legend1=$5
+legend2=$6
+
+plotsName=$7
+

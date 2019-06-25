@@ -1,0 +1,12 @@
+#!/bin/bash
+
+
+
+if [ "$proxy_test" == "Proxy not found" ]
+then
+    echo 'Proxy not found, calling setAAA.sh to set-up a new one'
+    echo
+    source setAAA.sh
+fi
+
+rm proxy_test*.tmp

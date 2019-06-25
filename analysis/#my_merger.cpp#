@@ -1,0 +1,46 @@
+#include <iostream>
+#include <vector>
+#include <string>
+
+#include "TFile.h"
+#include "TTree.h"
+#include "TChain.h"
+#include "TLorentzVector.h"
+
+
+
+
+int main( int argc, char* argv[] ) {
+
+  if( argc<6 ) {
+    std::cout << "Usage: ./jseMergeTrees [dataset1] [dataset2] [targetDirectory] [prodName]" << std::endl;
+    exit(1);
+  }
+
+  std::string dataset1(argv[1]);
+  std::string dataset2(argv[2]);
+  std::string targetDir(argv[3]);
+  std::string prodName(argv[4]);
+
+  std::string path("/eos/project/e/ecaldpg/www/JetMET_validation/mguillot");
+  //std::string path("/eos/cms/store/user/pandolf/JetStudiesECAL/");
+
+  TFile *file1 = TFile::Open( dataset1 );
+  TFile *file2 = TFile::Open( dataset2 );
+
+  
+
+
+  std::string outdir( Form("%s/multiTrees", targetDir.c_str()) );
+  system( Form("mkdir -p %s", outdir.c_str()) );
+
+  std::string outfileName( Form("%s/%s.root", outdir.c_str(), prodName.c_str()));
+  TFile* outfile = TFile::Open( outfileName.c_str(), "RECREATE" );
+  outfile->cd();
+
+  outfile->Close();
+
+  
+  return 0;
+
+}

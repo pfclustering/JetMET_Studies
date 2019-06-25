@@ -48,7 +48,7 @@ do
     
     declare datasetName$i=$datasetName
  
-    #./my_analyzer $prodName $datasetName $targetDir
+    ./my_analyzer $prodName $datasetName $targetDir
 done
 
 rm liste

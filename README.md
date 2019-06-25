@@ -12,8 +12,8 @@ cd JetMET_Studies/analysis
 This script automatically submit the plots here: http://ecaldpg.web.cern.ch/ecaldpg/JetMET_validation/mguillot/plots/
 
 If you want to run this locally, you will need to edit a few lines:
-In analyse_from_root.sh at line 44 change the target directory so that the root files are created where you want them to be created. Let's call your directory ```testDir```. 
 
+In analyse_from_root.sh at line 44 change the target directory so that the root files are created where you want them to be created. Let's call your directory ```testDir```. 
 
 In my_DrawStuff.cpp at line 55
 ```

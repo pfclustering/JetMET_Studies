@@ -28,11 +28,6 @@ bool noEPS = false;
 
 int main( int argc, char* argv[] ) {
   
-  if( argc<2 ) {
-    std::cout << "Usage: ./jseDrawStuff [productionName] [noEPS=false]" << std::endl;
-    exit(1);
-  }
-
   jseCommon::setStyle();
   std::string prodName1(argv[1]);
   std::string datasetName1(argv[2]);
@@ -42,13 +37,6 @@ int main( int argc, char* argv[] ) {
   std::string legend2(argv[6]);
   std::string plotsName(argv[7]);
 
-  if( argc>8 ) {
-    std::string noEPS_str(argv[2]);
-    if( noEPS_str=="true" || noEPS_str=="True" || noEPS_str=="TRUE" || noEPS_str=="noEPS" || noEPS_str=="fast" ) {
-      noEPS=true;
-      std::cout << "-> Will not save eps files, only PDF." << std::endl;
-    }
-  }
 
     std::vector< jseDataset* > datasets;
     datasets.push_back( new jseDataset( prodName1, datasetName1, legend1));

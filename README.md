@@ -13,7 +13,7 @@ This script automatically submit the plots here: http://ecaldpg.web.cern.ch/ecal
 
 If you want to run this locally, you will need to edit a few lines:
 
-+ In analyse_from_root.sh at line 44 change the target directory so that the root files are created where you want them to be created. Let's call your directory ```testDir```. 
++ In analyse_from_root.sh at line 44 change the target directory so that the root files are created where you want them to be created. For exemple : ```targetDir=testDir```. 
 
 + In my_DrawStuff.cpp at line 55
 ```
@@ -24,13 +24,13 @@ Just delete ```/eos/project/e/ecaldpg/www/JetMET_validation/mguillot/plots/``` s
 + Finally in draw_from_root.sh at line 34
 ```cd /eos/project/e/ecaldpg/www/JetMET_validation/mguillot/plots/$plotsName```
 Just delete ```/eos/project/e/ecaldpg/www/JetMET_validation/mguillot/plots/``` and comment the line 40.
+
 ### Run the script
 Here is an exemple to test the script.
 
 First set up your proxy and compile the code :
 ```
 source setAAA.sh
-make Makefile
 ```
 then run 
 ```

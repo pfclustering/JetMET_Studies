@@ -21,9 +21,10 @@ std::string outdir( Form("/eos/project/e/ecaldpg/www/JetMET_validation/mguillot/
 ```
 Just delete ```/eos/project/e/ecaldpg/www/JetMET_validation/mguillot/plots/``` so that you plots are created in your working directory.
 
-+ Finally in draw_from_root.sh at line 34
++ In draw_from_root.sh at line 34
 ```cd /eos/project/e/ecaldpg/www/JetMET_validation/mguillot/plots/$plotsName```
-Just delete ```/eos/project/e/ecaldpg/www/JetMET_validation/mguillot/plots/``` and comment the line 40.
+Just delete ```/eos/project/e/ecaldpg/www/JetMET_validation/mguillot/plots/``` 
++ Finally in draw_from_root.sh just comment the line 40.
 
 ### Run the script
 Here is an exemple to test the script.
@@ -31,6 +32,7 @@ Here is an exemple to test the script.
 First set up your proxy and compile the code :
 ```
 source setAAA.sh
+make
 ```
 then run 
 ```

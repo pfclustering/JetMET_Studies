@@ -23,6 +23,7 @@ Just delete ```/eos/project/e/ecaldpg/www/JetMET_validation/mguillot/plots/``` s
 
 + In draw_from_root.sh at line 34
 ```cd /eos/project/e/ecaldpg/www/JetMET_validation/mguillot/plots/$plotsName```
+
 Just delete ```/eos/project/e/ecaldpg/www/JetMET_validation/mguillot/plots/``` 
 + Finally in draw_from_root.sh just comment the line 40.
 

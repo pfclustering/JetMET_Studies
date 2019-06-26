@@ -37,4 +37,5 @@ make
 ```
 then run 
 ```
-./draw_from_root.sh
+./draw_from_root.sh RelValQCD_FlatPt_15_3000HS_13 CMSSW_10_6_0_pre4 106X_upgrade2018_realistic_v4-v1 UL-MC2018 RelValQCD_FlatPt_15_3000HS_13 CMSSW_10_5_0_pre2 105X_upgrade2018_realistic_v2_rsb-v1 MC2018 105X_vs_106X
+```

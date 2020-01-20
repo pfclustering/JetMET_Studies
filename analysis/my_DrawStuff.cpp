@@ -16,9 +16,9 @@
 
 
 void drawAllPlots( const std::vector< jseDataset* >& datasets, const std::string& comparisonName );
-void drawPlot( const std::string& outdir, const std::vector< jseDataset* >& datasets, const std::string& histoName, const std::string& sorting, const std::string& axisName, bool log_aussi=false );
-void drawProfileVsEta( const std::string& outdir, const std::vector< jseDataset* >& datasets, const std::string& varName, const std::string& sorting, const std::string& axisName, float yMin, float yMax, int iPt=-1 );
-void drawProfileVsPhi( const std::string& outdir, const std::vector< jseDataset* >& datasets, const std::string& varName, const std::string& sorting, const std::string& axisName, float yMin, float yMax, int iPt=-1 );
+void drawPlot( const std::string& outdir, const std::vector< jseDataset* >& datasets, const std::string& histoName, const std::string& axisName, bool log_aussi=false );
+void drawProfileVsEta( const std::string& outdir, const std::vector< jseDataset* >& datasets, const std::string& varName, const std::string& axisName, float yMin, float yMax, int iPt=-1 );
+void drawProfileVsPhi( const std::string& outdir, const std::vector< jseDataset* >& datasets, const std::string& varName, const std::string& axisName, float yMin, float yMax, int iPt=-1 );
 
 bool noEPS = false;
 
@@ -60,30 +60,30 @@ void drawAllPlots( const std::vector< jseDataset* >& datasets, const std::string
   // drawPlot( outdir, datasets, "nVertex", "Number of Reconstructed Vertexes" );
   // drawPlot( outdir, datasets, "rho", "Pile Up Energy Density #rho [GeV]" );
 
-  drawPlot( outdir, datasets, "Jet_pt", "Jet p_{T} [GeV]", "Jet.1" , true );
-  drawPlot( outdir, datasets, "Jet_eta", "Jet #eta","Jet.2" );
-  drawPlot( outdir, datasets, "nVertex", "nVertex", "Vertex.1");
-  drawPlot( outdir, datasets, "MET_phi", "MET_phi","MET.1");
-  drawPlot( outdir, datasets, "MET_pt", "MET_pt","MET.2");
-  drawPlot( outdir, datasets, "MET_sumEt", "MET_sumEt","MET.3");
+  drawPlot( outdir, datasets, "Jet_pt", "Jet p_{T} [GeV]", true );
+  drawPlot( outdir, datasets, "Jet_eta", "Jet #eta");
+  drawPlot( outdir, datasets, "nVertex", "nVertex");
+  drawPlot( outdir, datasets, "MET_phi", "MET_phi");
+  drawPlot( outdir, datasets, "MET_pt", "MET_pt");
+  drawPlot( outdir, datasets, "MET_sumEt", "MET_sumEt");
 
-  drawProfileVsEta( outdir, datasets, "Jet_pt", "Jet.3", "Jet p_{T} [GeV]", 0., 180);
+  drawProfileVsEta( outdir, datasets, "Jet_pt", "Jet p_{T} [GeV]", 0., 180);
 
-  drawProfileVsEta( outdir, datasets, "phEF","Jet.4" , "Jet Photon Energy Fraction"        ,   0., 0.85 );
-  drawProfileVsEta( outdir, datasets, "nhEF","Jet.5" , "Jet Neutral Hadron Energy Fraction", 0., 1  );
-  drawProfileVsEta( outdir, datasets, "chEF","Jet.6" , "Jet Charged Hadron Energy Fraction",   0., 0.85 );
+  drawProfileVsEta( outdir, datasets, "phEF", "Jet Photon Energy Fraction"        ,   0., 0.85 );
+  drawProfileVsEta( outdir, datasets, "nhEF", "Jet Neutral Hadron Energy Fraction", 0., 1  );
+  drawProfileVsEta( outdir, datasets, "chEF", "Jet Charged Hadron Energy Fraction",   0., 0.85 );
 
-  drawProfileVsEta( outdir, datasets, "phE","Jet.7" , "Jet Photon Energy [GeV]"            , 0.  , 100. );
-  drawProfileVsEta( outdir, datasets, "nhE","Jet.8" , "Jet Neutral Hadron Energy [GeV]"    , 0.  , 150.  );
-  drawProfileVsEta( outdir, datasets, "chE","Jet.9" , "Jet Charged Hadron Energy [GeV]"    , 0.  , 150. );
-  drawProfileVsPhi( outdir, datasets, "MET_pt","MET.4", "MET_pt over phi"        ,   0., 100 );
-  drawProfileVsPhi( outdir, datasets, "MET_sumEt","MET.5", "MET_sumEt over phi", 0., 3000 );
+  drawProfileVsEta( outdir, datasets, "phE", "Jet Photon Energy [GeV]"            , 0.  , 100. );
+  drawProfileVsEta( outdir, datasets, "nhE", "Jet Neutral Hadron Energy [GeV]"    , 0.  , 150.  );
+  drawProfileVsEta( outdir, datasets, "chE", "Jet Charged Hadron Energy [GeV]"    , 0.  , 150. );
+  drawProfileVsPhi( outdir, datasets, "MET_pt", "MET_pt over phi"        ,   0., 100 );
+  drawProfileVsPhi( outdir, datasets, "MET_sumEt", "MET_sumEt over phi", 0., 3000 );
 
 }
 
 
 
-void drawPlot( const std::string& outdir, const std::vector< jseDataset* >& datasets, const std::string& histoName, const std::string& axisName, const std::string& sorting, bool log_aussi ) {
+void drawPlot( const std::string& outdir, const std::vector< jseDataset* >& datasets, const std::string& histoName, const std::string& axisName, bool log_aussi ) {
 
   std::vector<int> colors = jseCommon::colors();
 
@@ -166,14 +166,14 @@ void drawPlot( const std::string& outdir, const std::vector< jseDataset* >& data
   pad1->RedrawAxis();
  
   
-  c1->SaveAs( Form("%s/%s. %s.png", outdir.c_str(), sorting.c_str(), histoName.c_str()) );
+  c1->SaveAs( Form("%s/%s.png", outdir.c_str(), histoName.c_str()) );
   
   delete c1;
 
 }
 
 
-void drawProfileVsPhi( const std::string& outdir, const std::vector< jseDataset* >& datasets, const std::string& varName, const std::string& sorting, const std::string& axisName, float yMin, float yMax, int iPt ) {
+void drawProfileVsPhi( const std::string& outdir, const std::vector< jseDataset* >& datasets, const std::string& varName, const std::string& axisName, float yMin, float yMax, int iPt ) {
 
 
   std::vector<int> colors = jseCommon::colors();
@@ -222,7 +222,7 @@ void drawProfileVsPhi( const std::string& outdir, const std::vector< jseDataset*
   gPad->RedrawAxis();
  
   
-  c1->SaveAs( Form("%s/%s. %s.png", outdir.c_str(), sorting.c_str(), profileName.c_str()) );
+  c1->SaveAs( Form("%s/%s.png", outdir.c_str(), profileName.c_str()) );
 
   delete c1;
   delete h2_axes;
@@ -231,7 +231,7 @@ void drawProfileVsPhi( const std::string& outdir, const std::vector< jseDataset*
 
 
 
-void drawProfileVsEta( const std::string& outdir, const std::vector< jseDataset* >& datasets, const std::string& varName, const std::string& sorting, const std::string& axisName, float yMin, float yMax, int iPt ) {
+void drawProfileVsEta( const std::string& outdir, const std::vector< jseDataset* >& datasets, const std::string& varName, const std::string& axisName, float yMin, float yMax, int iPt ) {
 
 
   std::vector<int> colors = jseCommon::colors();
@@ -297,7 +297,7 @@ void drawProfileVsEta( const std::string& outdir, const std::vector< jseDataset*
   gPad->RedrawAxis();
  
   
-  c1->SaveAs( Form("%s/%s. %s.png", outdir.c_str(),sorting.c_str(), profileName.c_str()) );
+  c1->SaveAs( Form("%s/%s.png", outdir.c_str(), profileName.c_str()) );
 
   delete c1;
   delete h2_axes;

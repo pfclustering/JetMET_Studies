@@ -4,7 +4,9 @@ echo "entering analyze_from_root script"
 
 echo "check the proxy"
 
-runDir="/afs/cern.ch/user/a/anlyon/CMSSW_10_6_0/src/JetMET_Studies/analysis"
+#runDir="/afs/cern.ch/user/a/anlyon/CMSSW_10_6_0/src/JetMET_Studies/analysis"
+runDir="/t3home/anlyon/CMSSW_10_6_0/src/JetMET_Studies/analysis"
+
 
 #proxy_test=`voms-proxy-info |& cut -d ':' -f 1`
 
@@ -61,7 +63,8 @@ do
 
     #echo "Will create the target dir"
     #mkdir /eos/user/a/anlyon/www/JetMET_validation/${1}/${2}/${3} #RelValQCD_FlatPt_15_3000HS_13
-    targetDir=/eos/user/a/anlyon/www/JetMET_validation/${1}/${2}/${3}
+    #targetDir=/eos/user/a/anlyon/www/JetMET_validation/${1}/${2}/${3}
+    targetDir=/scratch/anlyon/JetMET_validation/${1}/${2}/${3}
     
     cutOff=0
 
@@ -85,7 +88,9 @@ done
 rm liste
 
 echo "Will create the target dir"
-mkdir -p /eos/user/a/anlyon/www/JetMET_validation/${1}/${2}/${3}/histoFiles
+#mkdir -p /eos/user/a/anlyon/www/JetMET_validation/${1}/${2}/${3}/histoFiles
+mkdir -p /scratch/anlyon/JetMET_validation/${1}/${2}/${3}/histoFiles
+
 
 #Here we merge all the .root files produced by my_analyzer
 un=1

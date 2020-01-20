@@ -38,8 +38,8 @@ legend2=${8}
 plotsName=${9}
 
 
-#rm listeA
-#rm listeB
+rm listeA
+rm listeB
 
 #./my_DrawStuff $prodName1 $datasetName1 $prodName2 $datasetName2 $legend1 $legend2 $plotsName 
 echo "Will run the my_DrawStuff script"
@@ -48,9 +48,10 @@ echo "Will run the my_DrawStuff script"
 echo "Done with the my_DrawStuff script"
 
 echo "creating the output directory"
-mkdir -p /eos/user/a/anlyon/www/JetMET_validation/plots/$plotsName
+#mkdir -p /eos/user/a/anlyon/www/JetMET_validation/plots/$plotsName
+mkdir -p plots/$plotsName
 #cd /eos/project/e/ecaldpg/www/JetMET_validation/mguillot/plots/$plotsName
-cd /eos/user/a/anlyon/www/JetMET_validation/plots/$plotsName
+cd plots/$plotsName
 
 
 echo 'plots created with :' > specs

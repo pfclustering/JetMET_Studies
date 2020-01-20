@@ -9,12 +9,15 @@ then
     source setAAA.sh
 fi
 
-
+#making a DAS query to find dataset matching entry parameters, you can find more information at https://cmsweb.cern.ch/das/
 dataset=/${1}/${2}-${3}/NANOAODSIM
+echo $dataset
 dasgoclient --query="file dataset=$dataset | grep file.nevents | grep file.name" > liste
-
+less liste
 number_of_line=`wc -l liste | cut -d ' ' -f 1`
 
+#Looping on every dataset found until we got at least 50 000 events if possible
+#This loop parses the query output and calls my_analyzer.cpp for every dataset
 events=0
 i=0
 maxloop=10
@@ -24,8 +27,7 @@ while [ $events -lt $maxevents ] && [ $i -lt $number_of_line ]
 do
     let "i = $i +1"
     head -n $i liste | tail -1 > line.tmp
-    echo "i = "$i
-    
+        
     test=`cut -d '/' -f 2 line.tmp`
     if [ $test != "store" ]
     then
@@ -42,8 +44,8 @@ do
 
     datasetName=`cut -d '/' -f 9 line.tmp | less`
     targetDir=/eos/project/e/ecaldpg/www/JetMET_validation/mguillot/${1}/${2}/${3}
-
-    rm line.tmp
+    
+    rm line.tmp #comment to keep line.tmp for debugging purpose
     
     
     declare datasetName$i=$datasetName
@@ -53,6 +55,7 @@ done
 
 rm liste
 
+#Here we merge all the .root files produced by my_analyzer
 un=1
 if [ $number_of_line -gt $un ]
 then
@@ -66,8 +69,3 @@ else
 fi
 
 echo $targetDir
-
-
-
-
-

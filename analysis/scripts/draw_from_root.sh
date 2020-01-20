@@ -6,18 +6,19 @@
 #   exit 0
 #fi
 
-./analyze_from_root.sh ${1} ${2} ${3} > liste1
+#calling analyze_from_root.sh for both dataset and storing in listeA and listeB the location of the produced .root files 
+./analyze_from_root.sh ${1} ${2} ${3} > listeA
 
-tail -n 1 liste1>liste1.tmp
-mv liste1.tmp liste1
+tail -n 1 listeA>listeA.tmp
+mv listeA.tmp listeA
 
-./analyze_from_root.sh ${5} ${6} ${7} > liste22
+./analyze_from_root.sh ${5} ${6} ${7} > listeB
 
-tail -n 1 liste22>liste22.tmp
-mv liste22.tmp liste22
+tail -n 1 listeB>listeB.tmp
+mv listeB.tmp listeB
 
-prodName1=`less liste1`
-prodName2=`less liste22`
+prodName1=`less listeA`
+prodName2=`less listeB`
 
 datasetName1=fusedTree
 datasetName2=fusedTree
@@ -26,8 +27,8 @@ legend2=${8}
 plotsName=${9}
 
 
-rm liste1
-rm liste22
+rm listeA
+rm listeB
 
 ./my_DrawStuff $prodName1 $datasetName1 $prodName2 $datasetName2 $legend1 $legend2 $plotsName 
 

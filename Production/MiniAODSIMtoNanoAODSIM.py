@@ -1,4 +1,4 @@
- Auto generated configuration file
+# Auto generated configuration file
 # using: 
 # Revision: 1.19 
 # Source: /local/reps/CMSSW/CMSSW/Configuration/Applications/python/ConfigBuilder.py,v 
@@ -22,12 +22,14 @@ process.load('Configuration.StandardSequences.EndOfProcess_cff')
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(-1)
+   #input = cms.untracked.int32(-1)
+   input = cms.untracked.int32(1000)
 )
 
 # Input source
 process.source = cms.Source("PoolSource",
-    fileNames = cms.untracked.vstring('root://cms-xrd-global.cern.ch//store/relval/CMSSW_10_6_0_pre4/RelValQCD_FlatPt_15_3000HS_13/MINIAODSIM/PU25ns_106X_upgrade2018_realistic_v4-v1/10000/F466F220-316A-AF4E-B986-C1700BCB4F16.root'),
+    #fileNames = cms.untracked.vstring('root://cms-xrd-global.cern.ch//store/relval/CMSSW_10_6_0_pre4/RelValQCD_FlatPt_15_3000HS_13/MINIAODSIM/PU25ns_106X_upgrade2018_realistic_v4-v1/10000/F466F220-316A-AF4E-B986-C1700BCB4F16.root'),
+    fileNames = cms.untracked.vstring('root://cms-xrd-global.cern.ch//store/relval/CMSSW_10_6_8/RelValQCD_FlatPt_15_3000HS_13/MINIAODSIM/PU25ns_106X_mcRun2_asymptotic_v9_postVFP-v2/20000/C97347EF-9DF4-0D48-BC07-0BEEB326A724.root'),
     secondaryFileNames = cms.untracked.vstring()
 )
 
@@ -60,6 +62,7 @@ process.NANOAODSIMoutput = cms.OutputModule("NanoAODOutputModule",
 # Other statements
 from Configuration.AlCa.GlobalTag import GlobalTag
 process.GlobalTag = GlobalTag(process.GlobalTag, '106X_mc2017_realistic_forECAL_v6', '')
+#process.GlobalTag = GlobalTag(process.GlobalTag, '106X_mcRun2_asymptotic_v9', '')
 
 # Path and EndPath definitions
 process.nanoAOD_step = cms.Path(process.nanoSequenceMC)

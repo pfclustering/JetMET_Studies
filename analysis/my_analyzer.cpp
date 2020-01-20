@@ -36,9 +36,9 @@ int cutOff = std::stoi(cutOffstr);
     file->GetObject("Events", tree);
     
     //Uncomment to add relevant branches of the former tree in the histoFile
-    tree->SetBranchStatus("*", 0);
-    for (auto activeBranchName : {"MET_phi", "MET_pt", "MET_sumEt", "PV_npvs", "Jet_pt", "Jet_eta", "Jet_chHEF", "Jet_neHEF", "Jet_neEmEF" })
-      tree->SetBranchStatus(activeBranchName, 1);
+    //tree->SetBranchStatus("*", 0);
+    //for (auto activeBranchName : {"MET_phi", "MET_pt", "MET_sumEt", "PV_npvs", "Jet_pt", "Jet_eta", "Jet_chHEF", "Jet_neHEF", "Jet_neEmEF" })
+    //  tree->SetBranchStatus(activeBranchName, 1);
     
     system(Form("rm %s/histoFiles/%s", targetDir.c_str(), datasetName.c_str()));
     system(Form( "mkdir -p %s/histoFiles", targetDir.c_str()) );

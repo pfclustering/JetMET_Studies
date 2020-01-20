@@ -32,7 +32,7 @@ Here is an exemple to test the script.
 
 First set up your proxy and compile the code :
 ```
-source setAAA.sh
+voms-proxy-init -voms cms -rfc
 make
 ```
 then run 

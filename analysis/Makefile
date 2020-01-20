@@ -1,4 +1,4 @@
-all: my_DrawStuff my_analyzer
+all: my_DrawStuff my_analyzer new_analyzer
 CC = g++
 CFLAGS = -Wall -c -g -fpermissive 
 
@@ -19,6 +19,9 @@ my_DrawStuff: my_DrawStuff.cpp jseDataset.o jseCommon.o
 
 my_analyzer: my_analyzer.cpp
 	$(CC) -Wall $(INCLUDES) -o my_analyzer my_analyzer.cpp 	 $(ROOTFLAG) $(EXTRALIBS)
+
+new_analyzer: new_analyzer.cpp
+	$(CC) -Wall $(INCLUDES) -o new_analyzer new_analyzer.cpp 	 $(ROOTFLAG) $(EXTRALIBS)
 
 jseCommon.o: ../interface/jseCommon.h ../src/jseCommon.cc
 	$(CC) -Wall $(INCLUDES) -c ../src/jseCommon.cc $(ROOTFLAG) $(EXTRALIBS)

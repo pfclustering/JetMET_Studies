@@ -1,30 +1,29 @@
 #!/bin/bash
 
-#sbatch -p wn --account=t3 -o logs/prod.log -e logs/prod.log --job-name=nanoAOD --ntasks=10 launch_prod.sh
+#sbatch -p wn --account=t3 -o logs/prod.log -e logs/prod.log --job-name=nanoAOD --ntasks=10 --time=5-23:59 launch_prod.sh
 
 
-doMC=false
-doData=true
+doMC=true
+doData=false
 
 if [ "$doData" = true ] ; then
    campaign="JetHT"
-   release="Run2016F"
+   release="Run2016D"
    tag="ForValUL2016-v1"
 fi
 
 if [ "$doMC" = true ] ; then
    campaign="RelValQCD_FlatPt_15_3000HS_13"
    release="CMSSW_10_6_8"
-   #tag="FlatPU0to70_106X_mcRun2_asymptotic_preVFP_v3_UL16_CP5_preVFP-v1"
-   tag="FlatPU0to70_106X_mcRun2_asymptotic_v9_UL16_CP5_postVFP-v2"
+   tag="FlatPU0to70_106X_mcRun2_asymptotic_preVFP_v3_UL16_CP5_preVFP-v1"
+   #tag="FlatPU0to70_106X_mcRun2_asymptotic_v9_UL16_CP5_postVFP-v2"
 fi
 
-
-nEvents=10
+nEvents=-1
 if [ "$nEvents" == -1 ] ; then
    echo "Going to process all the events per file"
 else
-   echo "Going to process " $Events " events per file"
+   echo "Going to process " $nEvents " events per file"
 fi
 
 
@@ -49,8 +48,8 @@ echo "globalTag: " $globalTag
 
 directoryName=$campaign"_"$release"-"$tag
 workDir="/scratch/anlyon/"$directoryName
-runDir="/t3home/anlyon/CMSSW_10_6_0/src/JetMET_Studies/Production"
-saveDirRoot="/pnfs/psi.ch/cms/trivcat/store/user/anlyon/JetMETtest"
+runDir="/t3home/anlyon/CMSSW_10_6_8/src/JetMET_Studies/Production"
+saveDirRoot="/pnfs/psi.ch/cms/trivcat/store/user/anlyon/JetMET_production"
 
 #echo $workDir
 
@@ -69,10 +68,14 @@ fi
 if [ "$doMC" = true ] ; then
    dataset=/$campaign/$release-$tag/MINIAODSIM
 fi
+
 echo $dataset
-dasgoclient --query="file dataset=$dataset run=278801 | grep file.nevents | grep file.name" > liste
-#less liste
-number_of_line=`wc -l liste | cut -d ' ' -f 1`
+liste="liste_${campaign}_${release}-${tag}"
+echo $campaign
+echo $liste
+dasgoclient --query="file dataset=$dataset | grep file.nevents | grep file.name" > $liste
+less $liste
+number_of_line=`wc -l $liste | cut -d ' ' -f 1`
 
 
 events=0
@@ -84,7 +87,7 @@ maxevents=1000000
 while [ $events -lt $maxevents ] && [ $i -lt $number_of_line ]
 do
     let "i = $i +1"
-    head -n $i liste | tail -1 > line.tmp
+    head -n $i $liste | tail -1 > line.tmp
         
     test=`cut -d '/' -f 2 line.tmp`
     if [ $test != "store" ]
@@ -128,7 +131,6 @@ do
     if [ "$doMC" = true ] ; then
       cmsRun MiniAODSIMtoNanoAODSIM.py nevents=$nEvents productionName=$prodName dataset=$datasetName globalTag=$globalTag
     fi
-    #echo "I run driver" >> file.txt
 
     saveSEDir=$saveDir/$datasetName
     xrdfs t3dcachedb03.psi.ch mkdir $saveSEDir
@@ -141,7 +143,12 @@ do
     cd $runDir
 done
 
-rm liste
+# cleaning scratch
+cd $workDir
+rm -rf *
+cd $runDir
+
+rm $liste
 
 
 

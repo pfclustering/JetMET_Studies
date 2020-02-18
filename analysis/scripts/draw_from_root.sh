@@ -1,63 +1,70 @@
 #!/bin/bash
 
-#if [ $#!=9 ]
-#then
-#    echo "This script needs 9 parameters : ./draw_from_root campaign1 release1 globalTag1 legend1 campaign2 release2 globalTag2 legend2 plotsName"
-#   exit 0
-#fi
+# compile the files
+make all
 
-echo "will source the analyze_from_root script"
+# processing the first file
+echo "Will analyze the first file"
 
-#calling analyze_from_root.sh for both dataset and storing in listeA and listeB the location of the produced .root files 
-#./analyze_from_root.sh ${1} ${2} ${3} > listeA
-#cd scripts
-source scripts/analyze_from_root.sh ${1} ${2} ${3} > listeA
+if [ "${1}" == "data" ] ; then
+   echo "data: "${2}_${3}-${4}
+   source scripts/analyze_from_root.sh ${2} ${3} ${4} Data > listeA
+elif [ "${1}" == "MC" ] ; then
+   echo "MC: "${2}_${3}-${4}
+   source scripts/analyze_from_root.sh ${2} ${3} ${4} MC > listeA
+else
+   echo "Couldn't recognize if the first sample is Data or MC"
+   echo "Please make sure that the first parsed string is either 'data' or 'MC'" 
+   echo "-->Aborting"
+   kill %%
+fi
 
-echo "done with the analyze_from_root script"
+rm listeA
 
-tail -n 1 listeA>listeA.tmp
-mv listeA.tmp listeA
+echo "Done with the analyzing the first file"
 
-echo "after listA"
+# processing the second file
+echo "Will analyze the second file"
 
-#./analyze_from_root.sh ${5} ${6} ${7} > listeB
-source scripts/analyze_from_root.sh ${5} ${6} ${7} > listeB
+if [ "${6}" == "data" ] ; then
+   echo "data: "${7}_${8}-${9}
+   source scripts/analyze_from_root.sh ${7} ${8} ${9} Data > listeB
+elif [ "${6}" == "MC" ] ; then
+   echo "MC: "${7}_${8}-${9}
+   source scripts/analyze_from_root.sh ${7} ${8} ${9} MC > listeB
+else
+   echo "Couldn't recognize if the first sample is Data or MC"
+   echo "Please make sure that the first parsed string is either 'data' or 'MC'" 
+   echo "-->Aborting"
+   kill %%
+fi
 
-echo "after listeB"
+rm listeB
 
-tail -n 1 listeB>listeB.tmp
-mv listeB.tmp listeB
+echo "Done with the analyzing the second file"
 
-prodName1=`less listeA`
-prodName2=`less listeB`
+
+# setting drawing parameters
+
+my_prodName1="/scratch/anlyon/JetMET_validation/"${2}/${3}/${4}
+my_prodName2="/scratch/anlyon/JetMET_validation/"${7}/${8}/${9}
+echo "prodName1: " $my_prodName1
+echo "prodName2: " $my_prodName2
 
 datasetName1=fusedTree
 datasetName2=fusedTree
-legend1=${4}
-legend2=${8}
-plotsName=${9}
+legend1=${5}
+legend2=${10}
+plotsName=${11}
 
+echo "Will run the drawing script"
+./my_DrawStuff $my_prodName1 $datasetName1 $my_prodName2 $datasetName2 $legend1 $legend2 $plotsName 
+echo "Done with the drawing script"
 
-rm listeA
-rm listeB
+echo 'plots created with :' > $plotsName/specs
+echo $legend1'='${2}_${3}-${4} >> $plotsName/specs
+echo $legend2'='${7}_${8}-${9} >> $plotsName/specs
 
-#./my_DrawStuff $prodName1 $datasetName1 $prodName2 $datasetName2 $legend1 $legend2 $plotsName 
-echo "Will run the my_DrawStuff script"
-#cd ..
-./my_DrawStuff $prodName1 $datasetName1 $prodName2 $datasetName2 $legend1 $legend2 $plotsName 
-echo "Done with the my_DrawStuff script"
-
-echo "creating the output directory"
-#mkdir -p /eos/user/a/anlyon/www/JetMET_validation/plots/$plotsName
-mkdir -p plots/$plotsName
-#cd /eos/project/e/ecaldpg/www/JetMET_validation/mguillot/plots/$plotsName
-cd plots/$plotsName
-
-
-echo 'plots created with :' > specs
-echo $legend1'='$prodName1 >> specs
-echo $legend2'='$prodName2 >> specs
-
-cp ../index.php .
+cp index.php $plotsName
 
 cd -

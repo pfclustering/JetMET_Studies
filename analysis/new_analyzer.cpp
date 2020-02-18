@@ -18,34 +18,37 @@ main(int argc, char *argv[])
 {
 
    if( argc<4 ) {
-      std::cout << "Usage: ./my_analyzer [productionName] [datasetName] [targetDir] [cutOff]" << std::endl;
+      std::cout << "Usage: ./my_analyzer [productionName] [datasetName] [nanoFileDir] [targetDir] [cutOff]" << std::endl;
       exit(1);
    }
 
 
    std::string prodName(argv[1]);
    std::string datasetName(argv[2]);
-   std::string targetDir(argv[3]);
-   std::string cutOffstr(argv[4]);
+   std::string fileDir(argv[3]);
+   std::string targetDir(argv[4]);
+   std::string cutOffstr(argv[5]);
 
    int cutOff = std::stoi(cutOffstr);
 
    std::cout << "-> Starting analysis for prod: " << prodName << " dataset: " << datasetName << " and cutOff " << cutOff << std::endl;
 
    //TFile *file = TFile::Open(Form("root://cms-xrd-global.cern.ch/%s",prodName.c_str()));
-   TFile *file = TFile::Open("../Production/MC.root");
-   //    TFile *file = TFile::Open(Form("%s",prodName.c_str()));
+   //TFile *file = TFile::Open("/scratch/anlyon/JetMET_production/JetHT_Run2016G-ForValUL2016-v1/data.root");
+   TFile *file = TFile::Open(Form("%s/%s/file.root", "root://t3dcachedb.psi.ch:1094/", fileDir.c_str()));
+   //TFile *file = TFile::Open(Form("%s/file.root", fileDir.c_str()));
+   
    TTree *tree; 
    file->GetObject("Events", tree);
 
    cout << "got the Events tree" << endl;
 
    //Uncomment to add relevant branches of the former tree in the histoFile
-   //tree->SetBranchStatus("*", 0);
-   //for (auto activeBranchName : {"MET_phi", "MET_pt", "MET_sumEt", "PV_npvs", "Jet_pt", "Jet_eta", "Jet_chHEF", "Jet_neHEF", "Jet_neEmEF" })
-   //  tree->SetBranchStatus(activeBranchName, 1);
+   tree->SetBranchStatus("*", 0);
+   for (auto activeBranchName : {"MET_phi", "MET_pt", "MET_sumEt", "PV_npvs", "Jet_pt", "Jet_eta", "Jet_chHEF", "Jet_neHEF", "Jet_neEmEF" })
+     tree->SetBranchStatus(activeBranchName, 1);
 
-   system(Form("rm %s/histoFiles/%s", targetDir.c_str(), datasetName.c_str()));
+   //system(Form("rm %s/histoFiles/%s", targetDir.c_str(), datasetName.c_str()));
    system(Form( "mkdir -p %s/histoFiles", targetDir.c_str()) );
 
    TFile* outfile = TFile::Open( Form("%s/histoFiles/%s", targetDir.c_str(), datasetName.c_str()), "RECREATE" );
@@ -126,8 +129,7 @@ main(int argc, char *argv[])
 
       tree->GetEntry( iEntry );
 
-      //if( iEntry % 1000 == 0 ) std::cout << "  Entry: " << iEntry << " / " << nentries << std::endl;
-      cout << iEntry << " / " << nentries << endl;
+      if( iEntry % 1000 == 0 ) std::cout << "  Entry: " << iEntry << " / " << nentries << std::endl;
 
       h1_PV_npvs->Fill( nVert );
       h1_met_phi->Fill( MET_phi );
@@ -138,6 +140,7 @@ main(int argc, char *argv[])
       h2_MET_sumEt_vs_phi->Fill(MET_phi, MET_sumEt);
 
       for( unsigned ijet=0; ijet<njet; ++ijet ) {
+         //if(jet_pt[ijet]>cutOff && nVert>16 && nVert<20) {
          if(jet_pt[ijet]>cutOff) {
             h1_jet_pt ->Fill( jet_pt [ijet] );
             h1_jet_eta->Fill( jet_eta[ijet] );

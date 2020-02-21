@@ -39,15 +39,20 @@ if __name__ == "__main__":
    for fileName in listeSE:
       os.system('xrdcp {a} {b}'.format(a=fileName, b=workdir))
 
-   print 'End of copying'
    print 'Start of the merge'
    filesWork = [f for f in glob.glob(workdir+nanoName)]
   
-   command = 'python haddnano.py merged.root'
+   command = 'python haddnano.py {a}/merged.root'.format(a=workdir)
    for fileName in filesWork:
       command = command + ' {a}'.format(a=fileName)
 
    os.system(command)
+
+   # copying the file back to the storage element
+   os.system('xrdcp {a}/merged.root {b}/{c}/merged.root'.format(a=workdir, b=SEprefix, c=outputdir))
+
+   # empty the workdir
+   os.system('rm -r {a}'.format(a=workdir))
 
    print 'Done'
 

@@ -26,6 +26,10 @@ if __name__ == "__main__":
 
    listeSE = map(lambda x: SEprefix+x, filesSE)
 
+   stepIndex = []
+   for iFile in filesSE:
+      stepIndex.append(iFile[iFile.find('step4'):len(iFile)])
+
    # create the outputdir that will contain the mergedNanoAOD file
    outputdir = '/pnfs/psi.ch/cms/trivcat/store/user/anlyon/JetMET_production/{a}/'.format(a=opt.pl)
    os.system('xrdfs t3dcachedb03.psi.ch mkdir {a}'.format(a=outputdir))
@@ -35,13 +39,19 @@ if __name__ == "__main__":
    os.system('mkdir {a}'.format(a=workdir))
 
    # copy the nanoAOD files in the workdir
-   print 'Copying the files in the scratch'
+   print 'Copying the files in the workdir'
    for fileName in listeSE:
       os.system('xrdcp {a} {b}'.format(a=fileName, b=workdir))
 
+   filesWork = []
+   print "Checking the files"
+   for iFile,fileName in enumerate(listeSE):
+      rootFile = ROOT.TNetXNGFile.Open(fileName, 'r')
+      if rootFile and rootFile.GetListOfKeys().Contains('Events'):
+         filesWork.append(workdir+stepIndex[iFile])
+   
+
    print 'Start of the merge'
-   filesWork = [f for f in glob.glob(workdir+nanoName)]
-  
    command = 'python haddnano.py {a}/merged.root'.format(a=workdir)
    for fileName in filesWork:
       command = command + ' {a}'.format(a=fileName)

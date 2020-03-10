@@ -31,13 +31,18 @@ main(int argc, char *argv[])
 
    int cutOff = std::stoi(cutOffstr);
 
-   std::cout << "-> Starting analysis for prod: " << prodName << " dataset: " << datasetName << " and cutOff " << cutOff << std::endl;
+   std::cout << "-> Starting analysis for dataset: " << datasetName << " and cutOff " << cutOff << std::endl;
 
    //TFile *file = TFile::Open(Form("root://cms-xrd-global.cern.ch/%s",prodName.c_str()));
-   //TFile *file = TFile::Open("/scratch/anlyon/JetMET_production/JetHT_Run2016G-ForValUL2016-v1/data.root");
-   TFile *file = TFile::Open(Form("%s/%s/file.root", "root://t3dcachedb.psi.ch:1094/", fileDir.c_str()));
-   //TFile *file = TFile::Open(Form("%s/file.root", fileDir.c_str()));
-   
+   string name;
+   if(prodName!="private"){
+      name = "file";
+   }
+  else{
+      name = "merged";
+   }
+   TFile *file = TFile::Open(Form("%s/%s/%s.root", "root://t3dcachedb.psi.ch:1094/", fileDir.c_str(), name.c_str()));
+
    TTree *tree; 
    file->GetObject("Events", tree);
 
@@ -51,6 +56,10 @@ main(int argc, char *argv[])
    //system(Form("rm %s/histoFiles/%s", targetDir.c_str(), datasetName.c_str()));
    system(Form( "mkdir -p %s/histoFiles", targetDir.c_str()) );
 
+   if(prodName == "private"){
+      datasetName += ".root";
+   }
+   cout << "check: " << datasetName << endl;
    TFile* outfile = TFile::Open( Form("%s/histoFiles/%s", targetDir.c_str(), datasetName.c_str()), "RECREATE" );
 
    //Uncomment to add relevant branches of the former tree in the histoFile

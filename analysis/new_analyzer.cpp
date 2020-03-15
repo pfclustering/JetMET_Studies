@@ -78,6 +78,9 @@ main(int argc, char *argv[])
    tree->SetBranchAddress("Jet_eta", &jet_eta );
    float jet_phi[999];
    tree->SetBranchAddress("Jet_phi", &jet_phi );
+   float jet_puid[999];
+   tree->SetBranchAddress("Jet_puId", &jet_puid );
+
 
    float MET_phi;
    tree->SetBranchAddress("MET_phi", &MET_phi );

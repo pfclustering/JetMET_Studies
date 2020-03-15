@@ -96,8 +96,8 @@ process.NANOAODSIMoutput = cms.OutputModule("NanoAODOutputModule",
 # Other statements
 from Configuration.AlCa.GlobalTag import GlobalTag
 #process.GlobalTag = GlobalTag(process.GlobalTag, '106X_mcRun2_asymptotic_preVFP_v3', '')
-#process.GlobalTag = GlobalTag(process.GlobalTag, '{a}'.format(a=options.globalTag), '')
-process.GlobalTag = GlobalTag(process.GlobalTag, '106X_mcRun2_asymptotic_v9', '')
+process.GlobalTag = GlobalTag(process.GlobalTag, '{a}'.format(a=options.globalTag), '')
+#process.GlobalTag = GlobalTag(process.GlobalTag, '106X_mcRun2_asymptotic_v9', '')
 #process.GlobalTag = GlobalTag(process.GlobalTag, '106X_dataRun2_v25', '')
 
 

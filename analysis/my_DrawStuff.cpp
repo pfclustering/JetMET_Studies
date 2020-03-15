@@ -97,7 +97,7 @@ void drawPlot( const std::string& outdir, const std::vector< jseDataset* >& data
     legend = new TLegend(  0.75, 0.5, 0.9, 0.7 );
   }
   if( histoName == "Jet_eta"){
-    legend = new TLegend(  0.4, 0.4, 0.6, 0.6 );
+    legend = new TLegend(  0.4, 0.7, 0.6, 0.9 );
   }
   legend->SetTextSize(0.03);
   legend->SetFillColor(0);

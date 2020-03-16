@@ -134,6 +134,7 @@ main(int argc, char *argv[])
    TH2D* h2_chEF_vs_eta      = new TH2D( "h2_chEF_vs_eta"     , "", nBins_eta, -etaMax, etaMax, 100, 0., 1.);
    TH2D* h2_nhEF_vs_eta      = new TH2D( "h2_nhEF_vs_eta"     , "", nBins_eta, -etaMax, etaMax, 100, 0., 1. );
    TH2D* h2_phEF_vs_eta      = new TH2D( "h2_phEF_vs_eta"     , "", nBins_eta, -etaMax, etaMax, 100, 0., 1. );
+   TH2D* h2_totEF_vs_eta     = new TH2D( "h2_totEF_vs_eta"    , "", nBins_eta, -etaMax, etaMax, 100, 0., 1. );
 
    TH2D* h2_chE_vs_eta       = new TH2D( "h2_chE_vs_eta"      , "", nBins_eta, -etaMax, etaMax, 100, 0., 500 );
    TH2D* h2_nhE_vs_eta       = new TH2D( "h2_nhE_vs_eta"      , "", nBins_eta, -etaMax, etaMax, 100, 0., 500 );
@@ -170,6 +171,7 @@ main(int argc, char *argv[])
             h2_chEF_vs_eta     ->Fill( jet_eta[ijet], jet_chEF[ijet]    );
             h2_nhEF_vs_eta     ->Fill( jet_eta[ijet], jet_nhEF[ijet]    );
             h2_phEF_vs_eta     ->Fill( jet_eta[ijet], jet_phEF[ijet]    );
+            h2_totEF_vs_eta    ->Fill( jet_eta[ijet], jet_chEF[ijet]+jet_nhEF[ijet]+jet_phEF[ijet] );
 
             h2_chE_vs_eta      ->Fill( jet_eta[ijet], jet_chEF[ijet]    * jet_pt[ijet] );
             h2_nhE_vs_eta      ->Fill( jet_eta[ijet], jet_nhEF[ijet]    * jet_pt[ijet] );
@@ -181,6 +183,7 @@ main(int argc, char *argv[])
    h2_chEF_vs_eta->ProfileX("chEF_vs_eta");
    h2_nhEF_vs_eta->ProfileX("nhEF_vs_eta");
    h2_phEF_vs_eta->ProfileX("phEF_vs_eta");
+   h2_totEF_vs_eta->ProfileX("totEF_vs_eta");
 
    h2_chE_vs_eta->ProfileX("chE_vs_eta");
    h2_nhE_vs_eta->ProfileX("nhE_vs_eta");

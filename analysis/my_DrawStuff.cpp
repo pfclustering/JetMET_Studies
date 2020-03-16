@@ -72,6 +72,7 @@ void drawAllPlots( const std::vector< jseDataset* >& datasets, const std::string
   drawProfileVsEta( outdir, datasets, "phEF", "Jet Photon Energy Fraction"        ,   0., 0.85 );
   drawProfileVsEta( outdir, datasets, "nhEF", "Jet Neutral Hadron Energy Fraction", 0., 1  );
   drawProfileVsEta( outdir, datasets, "chEF", "Jet Charged Hadron Energy Fraction",   0., 0.85 );
+  drawProfileVsEta( outdir, datasets, "totEF", "Sum of Energy Fractions in Jet",   0.8, 1.2 );
 
   drawProfileVsEta( outdir, datasets, "phE", "Jet Photon Energy [GeV]"            , 0.  , 100. );
   drawProfileVsEta( outdir, datasets, "nhE", "Jet Neutral Hadron Energy [GeV]"    , 0.  , 150.  );
@@ -129,6 +130,9 @@ void drawPlot( const std::string& outdir, const std::vector< jseDataset* >& data
 
   thisHisto->DrawNormalized("p");
   thatHisto->DrawNormalized("p same");
+
+  //thisHisto->Draw("p");
+  //thatHisto->Draw("p same");
 
   pad2->cd();
   TH1D *rp = (TH1D*)thisHisto->Clone("rp");
@@ -265,7 +269,7 @@ void drawProfileVsEta( const std::string& outdir, const std::vector< jseDataset*
   float xMax_leg = 0.70;
   float yMax_leg = 0.30;
 
-  if( varName == "nhE" || varName == "nhEF" || varName=="phEF" || varName=="phE" || varName=="nhE" ) {
+  if( varName == "nhE" || varName == "nhEF" || varName=="phEF" || varName=="totEF" || varName=="phE" || varName=="nhE" ) {
 
     xMin_leg = 0.35;
     yMin_leg = 0.70;

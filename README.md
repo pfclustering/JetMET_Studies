@@ -49,3 +49,10 @@ Details and instructions are given directly in JetMETvalidator.py
 
 The main command consists in running the bash script 'scripts/draw_from_root.sh' that launches the different steps to analyse + draw the distributions. The analyser itself is launched via 'scripts/analyze_from_root.root' which gathers all the necessary information to launch the analyser 'new_analyzer.cpp'. The output of the analyser are so-called 'fusedTree.root' which contain the necessary histograms and TProfiles. The plotter 'my_DrawStuff.cpp' fetches those files and produce the plots.
 
+
+Note: the message error
+```
+Error in <TNetXNGFile::Open>: [ERROR] Server responded with an error: [3011] No such file
+```
+occurs when the script checks if the files found on DAS have been processed and stored in our SE repository. It should not be interpreted as an issue from the code, which is supposed to execute normally afterwards, given that at least one file was found. 
+

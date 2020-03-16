@@ -39,34 +39,33 @@ from argparse import ArgumentParser
 ### information of file 1 ###
 
 # a) is the file privately produced [yes/no]? 
-isLocal1 = 'no'
+isLocal1 = 'yes'
 
 # -> if yes: 
-prodLabel1 = 'QCD_noPU_pfrh3.0_seed3.0_thrXtalEBXtalEE_shs1.0_maxd10.0_y2023_J1_t33_n5000'
+prodLabel1 = 'QCD_wPU_noiseCond2023_pfrhRef_seedRef_thrXtalEBXtalEE_shs1.0_maxd10.0_y2023_J4_v3_t0_n50000'
 
 # -> if no:
 # is it 'Data' or 'MC' ? 
 fileType1 = 'Data'
 # enter file info: (campaign/release-tag)
 campaign1 = 'JetHT' #'RelValQCD_FlatPt_15_3000HS_13'
-release1 = 'Run2016F' #'CMSSW_10_6_8'
+release1 = 'Run2016B' #'CMSSW_10_6_8'
 tag1 = 'ForValUL2016-v1' # 'FlatPU0to70_106X_mcRun2_asymptotic_preVFP_v3_UL16_CP5_preVFP-v1'
 
 # b) file legend:
-legend1 = 'data2016RunF-withoutHIPM'
+legend1 = 'refThrs-wPU'
 
 # c) specific run [insert runId or '-'] ?
-whichRun1 = '278808' #'-'
+whichRun1 = '-' #'278808' 
 
 
 ### information of file 2 ###
-# add: doMerge
 
 # a) is the file privately produced [yes/no]? 
-isLocal2 = 'no'
+isLocal2 = 'yes'
 
 # -> if yes: 
-prodLabel2 = 'QCD_noPU_pfrh3.0_seed3.0_thrXtalEBXtalEE_shs1.0_maxd10.0_y2023_J1_t33_n5000'
+prodLabel2 = 'QCD_wPU_noiseCond2023_pfrh3.0-4.0_seed3.0-4.0_thrRingEBXtalEE_shs1.0_maxd10.0_y2023_J4_v3_t3-4_n50000'
 
 # -> if no:
 # is it 'Data' or 'MC' ? 
@@ -77,7 +76,7 @@ release2 = 'CMSSW_10_6_8' #'Run2016B'
 tag2 = 'FlatPU0to70_106X_mcRun2_asymptotic_v9_UL16_CP5_postVFP-v2' #'ForValUL2016-v1'
 
 # b) file legend:
-legend2 = 'MCpostVFP_PU0to70'
+legend2 = '3-4sigma-wPU'
 
 # c) specific run [insert runId or '-'] ?
 whichRun2 = '-'
@@ -85,13 +84,13 @@ whichRun2 = '-'
 
 ### other information ###
 # number of events per file:
-nEvents = '100000'
+nEvents = '43097'
 
 # apply cut on pT (in GeV)
 ptCutOff = '30'
 
 # where to save the plots? 
-repName = 'dataRunF_vs_MCpostVFP_PU0to70_new'
+repName = 'J4_v3_t0_vs_t3-4'
 
 # finally, in case you don't want to run the full machinery (analyser + drawer), please choose (only one set to True at a time):
 doAnalyserOnly = False

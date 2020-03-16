@@ -100,7 +100,6 @@ process.GlobalTag = GlobalTag(process.GlobalTag, '{a}'.format(a=options.globalTa
 #process.GlobalTag = GlobalTag(process.GlobalTag, '106X_mcRun2_asymptotic_v9', '')
 #process.GlobalTag = GlobalTag(process.GlobalTag, '106X_dataRun2_v25', '')
 
-
 # Path and EndPath definitions
 process.nanoAOD_step = cms.Path(process.nanoSequenceMC)
 process.endjob_step = cms.EndPath(process.endOfProcess)

@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# source scripts/draw_from_root.sh isNotLocal Data JetHT Run2016H ForValUL2016-v1 50000 - file1 isNotLocal Data JetHT Run2016H ForValUL2016-v1 50000 - file2 test
 
 #make sure that the CMSSW release is the correct one
 runDir="/t3home/anlyon/CMSSW_10_6_8/src/JetMET_Studies/analysis"
@@ -13,10 +14,10 @@ fi
 
 # different format file between MC and data
 if [ "$isLocal" = false ] ; then
-   if [ "${4}" == "Data" ] ; then
-      dataset=/${1}/${2}-${3}/MINIAOD
+   if [ "${2}" == "Data" ] ; then
+      dataset=/${3}/${4}-${5}/MINIAOD
    else
-      dataset=/${1}/${2}-${3}/MINIAODSIM
+      dataset=/${3}/${4}-${5}/MINIAODSIM
    fi
 else
    dataset=${2}
@@ -26,7 +27,7 @@ echo $dataset
 
 # define the output directorie
 if [ "$isLocal" = false ] ; then
-   targetDir=/scratch/anlyon/JetMET_validation/${1}/${2}/${3}
+   targetDir=/scratch/anlyon/JetMET_validation/${3}/${4}/${5}
 else
    targetDir=/scratch/anlyon/JetMET_validation/${2}
 fi
@@ -35,13 +36,18 @@ mkdir -p $targetDir/histoFiles
 # clean the targetDir
 rm -r $targetDir/histoFiles/*
 
-cutOff=30 #cut on jet pt, in GeV
+# add maxevents here
+maxevents=${6}
+cutOff=${8}  #cut on jet pt, in GeV
 
 # ---- if sample is not local ---- #
 if [ "$isLocal" = false ] ; then
    #making a DAS query to find dataset matching entry parameters, you can find more information at https://cmsweb.cern.ch/das/
-   dasgoclient --query="file dataset=$dataset | grep file.nevents | grep file.name" > liste
-   #dasgoclient --query="file dataset=$dataset run=278801 | grep file.nevents | grep file.name" > liste
+   if [ ${7} == '-' ] ; then
+      dasgoclient --query="file dataset=$dataset | grep file.nevents | grep file.name" > liste
+   else
+      dasgoclient --query="file dataset=$dataset run=${7} | grep file.nevents | grep file.name" > liste
+   fi
 
    less liste
    number_of_line=`wc -l liste | cut -d ' ' -f 1`
@@ -54,8 +60,9 @@ if [ "$isLocal" = false ] ; then
    #This loop parses the query output and calls new_analyzer.cpp for every dataset
 
    events=0
-   maxevents=50000
-   cutOff=30 #cut on jet pt, in GeV
+   nEvtDone=0
+   #maxevents=${6}
+   #cutOff=30 #cut on jet pt, in GeV
 
    i=0
    while [ $events -lt $maxevents ] && [ $i -lt $number_of_line ]
@@ -81,7 +88,7 @@ if [ "$isLocal" = false ] ; then
        datasetName=`cut -d '/' -f 9 line.tmp | less`
 
        # directory where the nanoAOD files are stored (when privately produced)
-       nanoFileDir=/pnfs/psi.ch/cms/trivcat/store/user/anlyon/JetMET_production/${1}_${2}-${3}/$datasetName
+       nanoFileDir=/pnfs/psi.ch/cms/trivcat/store/user/anlyon/JetMET_production/${3}_${4}-${5}/$datasetName
 
        rm line.tmp #comment to keep line.tmp for debugging purpose
        
@@ -90,9 +97,21 @@ if [ "$isLocal" = false ] ; then
        echo "datasetName: " $datasetName
        echo "targetDir: " $targetDir
        echo "nanoFileDir: " $nanoFileDir 
-       
-       ./new_analyzer $prodName $datasetName $nanoFileDir $targetDir $cutOff
 
+       # number of events per file:
+       echo "$(( $maxevents-$events))"
+       if [ $(($maxevents-$events)) -gt 0 ] ; then
+         nEvt=$nevents
+         nEvtDone=$(($nEvtDone+$nevents))
+         echo "cat 1"
+       else
+         nEvt=$(($maxevents-$nEvtDone))
+         echo "cat2"
+       fi
+       
+       ./new_analyzer $prodName $datasetName $nanoFileDir $targetDir $nEvt $cutOff
+       #./new_analyzer $prodName $datasetName $nanoFileDir $targetDir $cutOff
+       
        # adding the file to fusedTree.root 
        cd $targetDir/histoFiles
      
@@ -108,7 +127,7 @@ if [ "$isLocal" = false ] ; then
    rm liste
 fi
 
-# ---- if sample is not local ---- #
+# ---- if sample is local ---- #
 if [ "$isLocal" = true ] ; then
 
    nanoFileDir=/pnfs/psi.ch/cms/trivcat/store/user/anlyon/JetMET_production/${2}
@@ -119,8 +138,10 @@ if [ "$isLocal" = true ] ; then
    echo "datasetName: " $datasetName
    echo "targetDir: " $targetDir
    echo "nanoFileDir: " $nanoFileDir 
-   
-   ./new_analyzer $prodName $datasetName $nanoFileDir $targetDir $cutOff
+   echo "number of events: " $maxevents
+
+   ./new_analyzer $prodName $datasetName $nanoFileDir $targetDir $maxevents $cutOff
+   #./new_analyzer $prodName $datasetName $nanoFileDir $targetDir $cutOff
    cp $targetDir/histoFiles/$datasetName".root" $targetDir/histoFiles/fusedTree.root
 fi
 echo $targetDir

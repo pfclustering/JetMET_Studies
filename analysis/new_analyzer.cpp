@@ -1,5 +1,4 @@
 #include <iostream>    
-
 #include "TFile.h"
 #include "TH1.h"
 #include "TH2.h"
@@ -18,7 +17,7 @@ main(int argc, char *argv[])
 {
 
    if( argc<4 ) {
-      std::cout << "Usage: ./my_analyzer [productionName] [datasetName] [nanoFileDir] [targetDir] [cutOff]" << std::endl;
+      std::cout << "Usage: ./my_analyzer [productionName] [datasetName] [nanoFileDir] [targetDir] [nEvtsPerFile] [cutOff]" << std::endl;
       exit(1);
    }
 
@@ -27,11 +26,13 @@ main(int argc, char *argv[])
    std::string datasetName(argv[2]);
    std::string fileDir(argv[3]);
    std::string targetDir(argv[4]);
-   std::string cutOffstr(argv[5]);
+   std::string nEvts(argv[5]);
+   std::string cutOffstr(argv[6]);
 
    int cutOff = std::stoi(cutOffstr);
+   int nEvt = std::stoi(nEvts);
 
-   std::cout << "-> Starting analysis for dataset: " << datasetName << " and cutOff " << cutOff << std::endl;
+   std::cout << "-> Starting analysis for dataset: " << datasetName << " on " << nEvt << " events and cutOff " << cutOff << std::endl;
 
    //TFile *file = TFile::Open(Form("root://cms-xrd-global.cern.ch/%s",prodName.c_str()));
    string name;
@@ -136,13 +137,13 @@ main(int argc, char *argv[])
 
 
    int nentries = tree->GetEntries();
+   if(nentries < nEvt) nEvt = nentries;
 
-   for( unsigned iEntry=0; iEntry<nentries; ++iEntry ) {
-
+   for( unsigned iEntry=0; iEntry<nEvt; ++iEntry ) {
       tree->GetEntry( iEntry );
 
       if( iEntry % 1000 == 0 ) std::cout << "  Entry: " << iEntry << " / " << nentries << std::endl;
-
+      
       h1_PV_npvs->Fill( nVert );
       h1_met_phi->Fill( MET_phi );
       h1_met_sumEt->Fill( MET_sumEt );
@@ -152,7 +153,7 @@ main(int argc, char *argv[])
       h2_MET_sumEt_vs_phi->Fill(MET_phi, MET_sumEt);
 
       for( unsigned ijet=0; ijet<njet; ++ijet ) {
-         //if(jet_pt[ijet]>cutOff && nVert>16 && nVert<20) {
+         //if(jet_pt[ijet]>cutOff && nVert>16 && nVert<20) 
          if(jet_pt[ijet]>cutOff) {
             h1_jet_pt ->Fill( jet_pt [ijet] );
             h1_jet_eta->Fill( jet_eta[ijet] );

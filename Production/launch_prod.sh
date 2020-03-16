@@ -15,8 +15,8 @@ fi
 if [ "$doMC" = true ] ; then
    campaign="RelValQCD_FlatPt_15_3000HS_13"
    release="CMSSW_10_6_8"
-   #tag="FlatPU0to70_106X_mcRun2_asymptotic_preVFP_v3_UL16_CP5_preVFP-v1"
-   tag="FlatPU0to70_106X_mcRun2_asymptotic_v9_UL16_CP5_postVFP-v2"
+   tag="FlatPU0to70_106X_mcRun2_asymptotic_preVFP_v3_UL16_CP5_preVFP-v1"
+   #tag="FlatPU0to70_106X_mcRun2_asymptotic_v9_UL16_CP5_postVFP-v2"
 fi
 
 nEvents=-1

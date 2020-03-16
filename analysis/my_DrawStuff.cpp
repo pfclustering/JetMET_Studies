@@ -54,7 +54,7 @@ int main( int argc, char* argv[] ) {
 void drawAllPlots( const std::vector< jseDataset* >& datasets, const std::string& comparisonName ) {
 
   //std::string outdir( Form("/eos/project/e/ecaldpg/www/JetMET_validation/mguillot/plots/%s", comparisonName.c_str()) );
-  std::string outdir( Form("%s", comparisonName.c_str()) );
+  std::string outdir( Form("plots/%s", comparisonName.c_str()) );
   system( Form("mkdir -p %s", outdir.c_str()) );
 
   // drawPlot( outdir, datasets, "nVertex", "Number of Reconstructed Vertexes" );

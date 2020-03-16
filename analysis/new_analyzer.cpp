@@ -60,7 +60,6 @@ main(int argc, char *argv[])
    if(prodName == "private"){
       datasetName += ".root";
    }
-   cout << "check: " << datasetName << endl;
    TFile* outfile = TFile::Open( Form("%s/histoFiles/%s", targetDir.c_str(), datasetName.c_str()), "RECREATE" );
 
    //Uncomment to add relevant branches of the former tree in the histoFile

@@ -1,7 +1,5 @@
 #!/bin/bash
 
-# source scripts/draw_from_root.sh isNotLocal Data JetHT Run2016H ForValUL2016-v1 50000 - file1 isNotLocal Data JetHT Run2016H ForValUL2016-v1 50000 - file2 test
-
 #make sure that the CMSSW release is the correct one
 runDir="/t3home/anlyon/CMSSW_10_6_8/src/JetMET_Studies/analysis"
 
@@ -36,7 +34,6 @@ mkdir -p $targetDir/histoFiles
 # clean the targetDir
 rm -r $targetDir/histoFiles/*
 
-# add maxevents here
 maxevents=${6}
 cutOff=${8}  #cut on jet pt, in GeV
 
@@ -55,14 +52,11 @@ if [ "$isLocal" = false ] ; then
    echo "DAS query done"
 
 
-
-   #Looping on every dataset found until we got at least 50 000 events if possible
+   #Looping on every dataset found until we got at least maxevents if possible
    #This loop parses the query output and calls new_analyzer.cpp for every dataset
 
    events=0
    nEvtDone=0
-   #maxevents=${6}
-   #cutOff=30 #cut on jet pt, in GeV
 
    i=0
    while [ $events -lt $maxevents ] && [ $i -lt $number_of_line ]
@@ -110,7 +104,6 @@ if [ "$isLocal" = false ] ; then
        fi
        
        ./new_analyzer $prodName $datasetName $nanoFileDir $targetDir $nEvt $cutOff
-       #./new_analyzer $prodName $datasetName $nanoFileDir $targetDir $cutOff
        
        # adding the file to fusedTree.root 
        cd $targetDir/histoFiles
@@ -141,7 +134,6 @@ if [ "$isLocal" = true ] ; then
    echo "number of events: " $maxevents
 
    ./new_analyzer $prodName $datasetName $nanoFileDir $targetDir $maxevents $cutOff
-   #./new_analyzer $prodName $datasetName $nanoFileDir $targetDir $cutOff
    cp $targetDir/histoFiles/$datasetName".root" $targetDir/histoFiles/fusedTree.root
 fi
 echo $targetDir

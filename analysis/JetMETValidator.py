@@ -2,6 +2,7 @@ import sys
 import os
 import glob
 import ROOT
+from argparse import ArgumentParser
 
 '''
    This script aims at simplifying the syntax of the launch command to produce and compare the jet and met distributions of two files
@@ -13,19 +14,23 @@ import ROOT
       - local: one of our private file produced with the -c QCD options in
         https://github.com/pfclustering/RecoSimStudies/blob/am-branch/Dumpers/test/ECALproductionHelper/prodHelper.py
 
-   There is also the possibility to merge data files together (typically merge different data runs)
 
    -.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.
 
    The general syntax of the launch command is
-
+ 
+   source scripts/draw_from_root.sh [isLocal1/isNotLocal1] [Data|MC/prodLabel1] [campaign1/-] [release1/-] [tag1/-] [nEvents1] [run1] [legend1] [isLocal2/isNotLocal2] [Data|MC/prodLabel2] [campaign2/-] [release2/-] [tag2/-] [nEvents2] [run2] [legend2] [pTcut] [repName] [doAnalyserOnly] [doPlotterOnly] 
 
    -.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.
 
    How to used this script:
    - first insert the information in the User's decision board
    
-   - then do 'python JetMETValidator.py'
+   - then do 'python JetMETValidator.py' if you wish to print and execute the command
+
+     or 
+
+     'python JetMETValidator.py --printOnly' if you don't want to execute the command 
 
 '''
 
@@ -89,8 +94,16 @@ ptCutOff = '30'
 # where to save the plots? 
 repName = 'test'
 
+# finally, in case you don't want to run the full machinery (analyser + drawer), please choose (only one set to True at a time):
+doAnalyserOnly = False
+doPlotterOnly = False 
 
 #'------------------------------------------------------'
+
+# first, get the parsed argument, if exisiting
+parser = ArgumentParser(description='Script to produce the command to run the JetMET validation tools', add_help=True)
+parser.add_argument('--printOnly', dest='printOnly', help='add this option in case you want the script to only print the command without executing it', action='store_true', default=False)
+option =  parser.parse_args()
 
 
 # some functions
@@ -153,16 +166,19 @@ label_p = legend2
 label_q = ptCutOff
 label_r = repName 
 
+label_s = doAnalyserOnly
+label_t = doPlotterOnly
+
 # produce the command: 
-command = 'source scripts/draw_from_root.sh {a} {b} {c} {d} {e} {f} {g} {h} {i} {j} {k} {l} {m} {n} {o} {p} {q} {r}'.format(a=label_a, b=label_b, c=label_c, d=label_d, e=label_e, f=label_f, g=label_g, h=label_h, i=label_i, j=label_j, k=label_k, l=label_l, m=label_m, n=label_n, o=label_o, p=label_p, q=label_q, r=label_r)
+command = 'source scripts/draw_from_root.sh {a} {b} {c} {d} {e} {f} {g} {h} {i} {j} {k} {l} {m} {n} {o} {p} {q} {r} {s} {t}'.format(a=label_a, b=label_b, c=label_c, d=label_d, e=label_e, f=label_f, g=label_g, h=label_h, i=label_i, j=label_j, k=label_k, l=label_l, m=label_m, n=label_n, o=label_o, p=label_p, q=label_q, r=label_r, s=label_s, t=label_t)
 
 print '\n'
 print "Running command: \n"
-#print 'source scripts/draw_from_root.sh {a} {b} {c} {d} {e} {f} {g} {h} {i} {j} {k} {l} {m} {n} {o} {p} {q}'.format(a=label_a, b=label_b, c=label_c, d=label_d, e=label_e, f=label_f, g=label_g, h=label_h, i=label_i, j=label_j, k=label_k, l=label_l, m=label_m, n=label_n, o=label_o, p=label_p, q=label_q)
 print command
 print '\n'
 
-os.system(command)
+if not option.printOnly:
+   os.system(command)
 
 
 

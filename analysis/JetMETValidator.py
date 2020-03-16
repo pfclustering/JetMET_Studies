@@ -39,7 +39,7 @@ from argparse import ArgumentParser
 ### information of file 1 ###
 
 # a) is the file privately produced [yes/no]? 
-isLocal1 = 'yes'
+isLocal1 = 'no'
 
 # -> if yes: 
 prodLabel1 = 'QCD_noPU_pfrh3.0_seed3.0_thrXtalEBXtalEE_shs1.0_maxd10.0_y2023_J1_t33_n5000'
@@ -48,15 +48,15 @@ prodLabel1 = 'QCD_noPU_pfrh3.0_seed3.0_thrXtalEBXtalEE_shs1.0_maxd10.0_y2023_J1_
 # is it 'Data' or 'MC' ? 
 fileType1 = 'Data'
 # enter file info: (campaign/release-tag)
-campaign1 = 'JetHT'
-release1 = 'Run2016H'
-tag1 = 'ForValUL2016-v1'
+campaign1 = 'JetHT' #'RelValQCD_FlatPt_15_3000HS_13'
+release1 = 'Run2016F' #'CMSSW_10_6_8'
+tag1 = 'ForValUL2016-v1' # 'FlatPU0to70_106X_mcRun2_asymptotic_preVFP_v3_UL16_CP5_preVFP-v1'
 
 # b) file legend:
-legend1 = 'file1'
+legend1 = 'data2016RunF-withoutHIPM'
 
 # c) specific run [insert runId or '-'] ?
-whichRun1 = '-'
+whichRun1 = '278808' #'-'
 
 
 ### information of file 2 ###
@@ -70,14 +70,14 @@ prodLabel2 = 'QCD_noPU_pfrh3.0_seed3.0_thrXtalEBXtalEE_shs1.0_maxd10.0_y2023_J1_
 
 # -> if no:
 # is it 'Data' or 'MC' ? 
-fileType2 = 'Data'
+fileType2 = 'MC'
 # enter file info: (campaign/release-tag)
-campaign2 = 'JetHT'
-release2 = 'Run2016H'
-tag2 = 'ForValUL2016-v1'
+campaign2 = 'RelValQCD_FlatPt_15_3000HS_13' #'JetHT'
+release2 = 'CMSSW_10_6_8' #'Run2016B'
+tag2 = 'FlatPU0to70_106X_mcRun2_asymptotic_v9_UL16_CP5_postVFP-v2' #'ForValUL2016-v1'
 
 # b) file legend:
-legend2 = 'file2'
+legend2 = 'MCpostVFP_PU0to70'
 
 # c) specific run [insert runId or '-'] ?
 whichRun2 = '-'
@@ -85,20 +85,24 @@ whichRun2 = '-'
 
 ### other information ###
 # number of events per file:
-nEvents = '33000'
-# note: in case file1 and file2 are merged, nEvents/2 will be taken from each file, and nEvents from file3
+nEvents = '100000'
 
 # apply cut on pT (in GeV)
 ptCutOff = '30'
 
 # where to save the plots? 
-repName = 'test'
+repName = 'dataRunF_vs_MCpostVFP_PU0to70_new'
 
 # finally, in case you don't want to run the full machinery (analyser + drawer), please choose (only one set to True at a time):
 doAnalyserOnly = False
-doPlotterOnly = False 
+doPlotterOnly = False
 
 #'------------------------------------------------------'
+
+
+
+
+
 
 # first, get the parsed argument, if exisiting
 parser = ArgumentParser(description='Script to produce the command to run the JetMET validation tools', add_help=True)

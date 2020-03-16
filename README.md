@@ -5,39 +5,47 @@ Scripts to send online plots useful to JetMET validation
 Clone this repository in a CMSSW release, preferably CMSSW_10_6_0.
 ```bash
 git clone https://github.com/martinguillot/JetMET_Studies.git
-cd JetMET_Studies/analysis
+cd JetMET_Studies/
 ```
-## Running the script locally
-### Modifying the code
-This script automatically submit the plots here: http://ecaldpg.web.cern.ch/ecaldpg/JetMET_validation/mguillot/plots/
 
-If you want to run this locally, you will need to edit a few lines:
-
-+ In analyse_from_root.sh at line 44 change the target directory so that the root files are created where you want them to be created. For exemple : ```targetDir=testDir```. 
-
-+ In my_DrawStuff.cpp at line 55
-```
-std::string outdir( Form("/eos/project/e/ecaldpg/www/JetMET_validation/mguillot/plots/%s", comparisonName.c_str()) );
-```
-Just delete ```/eos/project/e/ecaldpg/www/JetMET_validation/mguillot/plots/``` so that you plots are created in your working directory.
-
-+ In draw_from_root.sh at line 34
-```cd /eos/project/e/ecaldpg/www/JetMET_validation/mguillot/plots/$plotsName```
-
-Just delete ```/eos/project/e/ecaldpg/www/JetMET_validation/mguillot/plots/``` 
-+ Finally in draw_from_root.sh just comment the line 40.
-
-### Run the script
-Here is an exemple to test the script.
-
-First set up your proxy and compile the code :
+In case you will need to interact with the SE, don't forget to setup your proxy:
 ```
 voms-proxy-init -voms cms -rfc
-make
-```
-then run 
-```
-./draw_from_root.sh RelValQCD_FlatPt_15_3000HS_13 CMSSW_10_6_0_pre4 106X_upgrade2018_realistic_v4-v1 UL-MC2018 RelValQCD_FlatPt_15_3000HS_13 CMSSW_10_5_0_pre2 105X_upgrade2018_realistic_v2_rsb-v1 MC2018 105X_vs_106X
+
 ```
 
-You should get your plots in a directory called 105X_vs_106X and the associated .root files in your target directory.
+## Production
+You might need to produce NANOAOD files on top of MINIAODs produced centrally.
+
+In this case, do
+```
+cd Production/
+```
+
+Then, in launch_prod.sh:
+- Decide whether to run Data or MC
+- Insert the campain_release-tag info so that the file can be found in DAS
+- Check that the GlobalTags are the correct one
+- Choose in which repository to store the files 
+
+Once this is ready, do
+```
+sbatch -p wn --account=t3 -o logs/prod.log -e logs/prod.log --job-name=nanoAOD --time=5-23:59 launch_prod.sh
+```
+
+## JetMET validator
+
+```
+cd analysis/
+```
+
+This is a set of scripts (Analyser + Plotter) that allow to produce and compare the main Jet and MET distributions.
+
+Everything can be monitored from JetMETvalidator.py. This script produces the command line that launches the analyser+plotter for two specific files.
+
+```
+Details and instructions are given directly in JetMETvalidator.py
+```
+
+The main command consists in running the bash script 'scripts/draw_from_root.sh' that launches the different steps to analyse + draw the distributions. The analyser itself is launched via 'scripts/analyze_from_root.root' which gathers all the necessary information to launch the analyser 'new_analyzer.cpp'. The output of the analyser are so-called 'fusedTree.root' which contain the necessary histograms and TProfiles. The plotter 'my_DrawStuff.cpp' fetches those files and produce the plots.
+

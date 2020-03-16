@@ -87,7 +87,7 @@ if [ ${19} != "True" ] ; then # we run the drawer only if doAnalyserOnly is Fals
    command='source scripts/draw_from_root.sh'${1}' '${2}' '${3}' '${4}' '${5}' '${6}' '${7}' '${8}' '${9}' '${10}' '${11}' '${12}' '${13}' '${14}' '${15}' '${16}' '${17}  
    echo $command >> 'plots/'$plotsName/specs
 
-   cp index.php $plotsName
+   cp index.php 'plots/'$plotsName
 
    cd -
 fi   

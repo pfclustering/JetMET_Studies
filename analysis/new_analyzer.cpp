@@ -42,7 +42,15 @@ main(int argc, char *argv[])
   else{
       name = "merged";
    }
-   TFile *file = TFile::Open(Form("%s/%s/%s.root", "root://t3dcachedb.psi.ch:1094/", fileDir.c_str(), name.c_str()));
+   TFile *file;
+   if(TFile::Open(Form("%s/%s/%s.root", "root://t3dcachedb.psi.ch:1094/", fileDir.c_str(), name.c_str()))){
+      file = TFile::Open(Form("%s/%s/%s.root", "root://t3dcachedb.psi.ch:1094/", fileDir.c_str(), name.c_str()));
+   }
+  else{
+      cout << "file not found" << endl;
+      //return 0;
+      exit(11);
+   }
 
    TTree *tree; 
    file->GetObject("Events", tree);

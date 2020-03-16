@@ -51,6 +51,8 @@ if [ "$isLocal" = false ] ; then
    echo "number of line: " $number_of_line
    echo "DAS query done"
 
+   # check if the files exist and creating fileListe which contains the valid dataset names
+   python checkDASFiles.py --i1 ${3} --i2 ${4} --i3 ${5}
 
    #Looping on every dataset found until we got at least maxevents if possible
    #This loop parses the query output and calls new_analyzer.cpp for every dataset
@@ -77,15 +79,19 @@ if [ "$isLocal" = false ] ; then
        nevents=`cut -d " " -f 1 line.tmp`
        let "events=$events+$nevents"
 
-       prodName=`cut -d " " -f 4 line.tmp`
+       #prodName=`cut -d " " -f 4 line.tmp`
+       prodName='centrallyProcuded'
 
-       datasetName=`cut -d '/' -f 9 line.tmp | less`
+       #datasetName=`cut -d '/' -f 9 line.tmp | less`
+       head -n $i fileListe | tail -1 > datasetNames
+       datasetName=`cut -d " " -f 41 datasetNames`
 
        # directory where the nanoAOD files are stored (when privately produced)
        nanoFileDir=/pnfs/psi.ch/cms/trivcat/store/user/anlyon/JetMET_production/${3}_${4}-${5}/$datasetName
 
        rm line.tmp #comment to keep line.tmp for debugging purpose
-       
+       rm datasetNames
+
        echo "will source my_analyzer"
        echo "productionName: " $prodName
        echo "datasetName: " $datasetName
@@ -93,14 +99,11 @@ if [ "$isLocal" = false ] ; then
        echo "nanoFileDir: " $nanoFileDir 
 
        # number of events per file:
-       echo "$(( $maxevents-$events))"
        if [ $(($maxevents-$events)) -gt 0 ] ; then
          nEvt=$nevents
          nEvtDone=$(($nEvtDone+$nevents))
-         echo "cat 1"
        else
          nEvt=$(($maxevents-$nEvtDone))
-         echo "cat2"
        fi
        
        ./new_analyzer $prodName $datasetName $nanoFileDir $targetDir $nEvt $cutOff
@@ -118,6 +121,7 @@ if [ "$isLocal" = false ] ; then
    done
 
    rm liste
+   rm fileListe
 fi
 
 # ---- if sample is local ---- #

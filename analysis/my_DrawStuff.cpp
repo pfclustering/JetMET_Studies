@@ -92,7 +92,7 @@ void drawPlot( const std::string& outdir, const std::vector< jseDataset* >& data
 
   TPaveText* labelTop = jseCommon::getLabelTopSimulation();
   labelTop->Draw();
-  TLegend* legend = new TLegend( 0.65, 0.7, 0.9, 0.80 );
+  TLegend* legend = new TLegend( 0.55, 0.7, 0.8, 0.80 );
   if( histoName == "MET_phi"){
     legend = new TLegend(  0.75, 0.5, 0.9, 0.7 );
   }

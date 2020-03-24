@@ -99,11 +99,17 @@ main(int argc, char *argv[])
 
    float jet_chEF[999];
    tree->SetBranchAddress("Jet_chHEF", &jet_chEF );
+   float jet_chEFJerc[999];
+   tree->SetBranchAddress("Jet_jercCHF", &jet_chEFJerc );
    float jet_nhEF[999];
    tree->SetBranchAddress("Jet_neHEF", &jet_nhEF );
    float jet_phEF[999];
    tree->SetBranchAddress("Jet_neEmEF", &jet_phEF );
-
+   float jet_elEF[999];
+   tree->SetBranchAddress("Jet_chEmEF", &jet_elEF);
+   float jet_muEF[999];
+   tree->SetBranchAddress("Jet_muEF", &jet_muEF);
+   
 
    TH1D *h1_PV_npvs = new TH1D("nVertex", "", 100, 0, 100);
    TH1D *h1_met_phi = new TH1D("MET_phi", "", 64, -3.2, 3.2);
@@ -132,9 +138,13 @@ main(int argc, char *argv[])
    //TProfile* hp_MET_sumEt_vs_phi = new TProfile( "MET_sumEt_vs_phi", "", nBins_phi, -phiMax, phiMax );
 
    TH2D* h2_chEF_vs_eta      = new TH2D( "h2_chEF_vs_eta"     , "", nBins_eta, -etaMax, etaMax, 100, 0., 1.);
+   TH2D* h2_chEFJerc_vs_eta  = new TH2D( "h2_chEFJerc_vs_eta" , "", nBins_eta, -etaMax, etaMax, 100, 0., 1.);
    TH2D* h2_nhEF_vs_eta      = new TH2D( "h2_nhEF_vs_eta"     , "", nBins_eta, -etaMax, etaMax, 100, 0., 1. );
    TH2D* h2_phEF_vs_eta      = new TH2D( "h2_phEF_vs_eta"     , "", nBins_eta, -etaMax, etaMax, 100, 0., 1. );
+   TH2D* h2_elEF_vs_eta      = new TH2D( "h2_elEF_vs_eta"     , "", nBins_eta, -etaMax, etaMax, 100, 0., 1. );
+   TH2D* h2_muEF_vs_eta      = new TH2D( "h2_muEF_vs_eta"     , "", nBins_eta, -etaMax, etaMax, 100, 0., 1. );
    TH2D* h2_totEF_vs_eta     = new TH2D( "h2_totEF_vs_eta"    , "", nBins_eta, -etaMax, etaMax, 100, 0., 1. );
+   TH2D* h2_totEF_vs_pt      = new TH2D( "h2_totEF_vs_pt"    , "",  100, 0, 500, 100, 0., 1. );
 
    TH2D* h2_chE_vs_eta       = new TH2D( "h2_chE_vs_eta"      , "", nBins_eta, -etaMax, etaMax, 100, 0., 500 );
    TH2D* h2_nhE_vs_eta       = new TH2D( "h2_nhE_vs_eta"      , "", nBins_eta, -etaMax, etaMax, 100, 0., 500 );
@@ -169,9 +179,13 @@ main(int argc, char *argv[])
             h2_Jet_pt_vs_eta->Fill( jet_eta[ijet], jet_pt[ijet]    );
 
             h2_chEF_vs_eta     ->Fill( jet_eta[ijet], jet_chEF[ijet]    );
+            h2_chEFJerc_vs_eta ->Fill( jet_eta[ijet], jet_chEFJerc[ijet]);
             h2_nhEF_vs_eta     ->Fill( jet_eta[ijet], jet_nhEF[ijet]    );
             h2_phEF_vs_eta     ->Fill( jet_eta[ijet], jet_phEF[ijet]    );
-            h2_totEF_vs_eta    ->Fill( jet_eta[ijet], jet_chEF[ijet]+jet_nhEF[ijet]+jet_phEF[ijet] );
+            h2_elEF_vs_eta     ->Fill( jet_eta[ijet], jet_elEF[ijet]    );
+            h2_muEF_vs_eta     ->Fill( jet_eta[ijet], jet_muEF[ijet]    );
+            h2_totEF_vs_eta    ->Fill( jet_eta[ijet], jet_chEF[ijet]+jet_nhEF[ijet]+jet_phEF[ijet]+jet_elEF[ijet]+jet_muEF[ijet] );
+            h2_totEF_vs_pt     ->Fill( jet_pt[ijet], jet_chEF[ijet]+jet_nhEF[ijet]+jet_phEF[ijet]+jet_elEF[ijet]+jet_muEF[ijet] );
 
             h2_chE_vs_eta      ->Fill( jet_eta[ijet], jet_chEF[ijet]    * jet_pt[ijet] );
             h2_nhE_vs_eta      ->Fill( jet_eta[ijet], jet_nhEF[ijet]    * jet_pt[ijet] );
@@ -181,9 +195,13 @@ main(int argc, char *argv[])
    }
    h2_Jet_pt_vs_eta->ProfileX("Jet_pt_vs_eta");
    h2_chEF_vs_eta->ProfileX("chEF_vs_eta");
+   h2_chEFJerc_vs_eta->ProfileX("chEFJerc_vs_eta");
    h2_nhEF_vs_eta->ProfileX("nhEF_vs_eta");
    h2_phEF_vs_eta->ProfileX("phEF_vs_eta");
+   h2_elEF_vs_eta->ProfileX("elEF_vs_eta");
+   h2_muEF_vs_eta->ProfileX("muEF_vs_eta");
    h2_totEF_vs_eta->ProfileX("totEF_vs_eta");
+   h2_totEF_vs_pt->ProfileX("totEF_vs_pt");
 
    h2_chE_vs_eta->ProfileX("chE_vs_eta");
    h2_nhE_vs_eta->ProfileX("nhE_vs_eta");

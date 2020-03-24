@@ -72,6 +72,9 @@ void drawAllPlots( const std::vector< jseDataset* >& datasets, const std::string
   drawProfileVsEta( outdir, datasets, "phEF", "Jet Photon Energy Fraction"        ,   0., 0.85 );
   drawProfileVsEta( outdir, datasets, "nhEF", "Jet Neutral Hadron Energy Fraction", 0., 1  );
   drawProfileVsEta( outdir, datasets, "chEF", "Jet Charged Hadron Energy Fraction",   0., 0.85 );
+  drawProfileVsEta( outdir, datasets, "chEFJerc", "Jet Charged Hadron Energy Fraction with JERC definition", 0., 0.85 );
+  drawProfileVsEta( outdir, datasets, "elEF", "Jet Electron Energy Fraction",   0., 0.85 );
+  drawProfileVsEta( outdir, datasets, "muEF", "Jet Muon Energy Fraction",   0., 0.85 );
   drawProfileVsEta( outdir, datasets, "totEF", "Sum of Energy Fractions in Jet",   0.8, 1.2 );
 
   drawProfileVsEta( outdir, datasets, "phE", "Jet Photon Energy [GeV]"            , 0.  , 100. );

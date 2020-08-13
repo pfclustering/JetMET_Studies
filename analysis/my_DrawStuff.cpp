@@ -66,6 +66,7 @@ void drawAllPlots( const std::vector< jseDataset* >& datasets, const std::string
   drawPlot( outdir, datasets, "MET_phi", "MET_phi");
   drawPlot( outdir, datasets, "MET_pt", "MET_pt");
   drawPlot( outdir, datasets, "MET_sumEt", "MET_sumEt");
+  drawPlot( outdir, datasets, "totEF", "Sum of Energy Fractions in Jet");
 
   drawProfileVsEta( outdir, datasets, "Jet_pt", "Jet p_{T} [GeV]", 0., 180);
 
@@ -93,7 +94,7 @@ void drawPlot( const std::string& outdir, const std::vector< jseDataset* >& data
 
   TCanvas* c1 = new TCanvas("c1", "", 600, 600);
   c1->cd();
-
+  
   TPaveText* labelTop = jseCommon::getLabelTopSimulation();
   labelTop->Draw();
   TLegend* legend = new TLegend( 0.55, 0.7, 0.8, 0.80 );
@@ -123,6 +124,7 @@ void drawPlot( const std::string& outdir, const std::vector< jseDataset* >& data
   thisHisto->SetLineColor(colors[0]);
   thisHisto->SetXTitle( axisName.c_str() );
   thisHisto->SetYTitle( "Normalized to Unity" );
+  //thisHisto->GetYaxis()->SetRangeUser(280,600);
 
   thatHisto->SetMarkerSize(1.3);
   thatHisto->SetMarkerStyle(kFullTriangleUp);
@@ -149,6 +151,8 @@ void drawPlot( const std::string& outdir, const std::vector< jseDataset* >& data
   rp->Scale(nentries2/nentries1);
   rp->SetMinimum(0.);
   rp->SetMaximum(2.);
+  //rp->SetMinimum(1.5);
+  //rp->SetMaximum(3.0);
   pad2->SetGridy();
   rp->Draw("e p"); 
 

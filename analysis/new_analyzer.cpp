@@ -39,14 +39,14 @@ main(int argc, char *argv[])
    if(prodName!="private"){
       name = "file";
    }
-  else{
+   else{
       name = "merged";
    }
    TFile *file;
    if(TFile::Open(Form("%s/%s/%s.root", "root://t3dcachedb.psi.ch:1094/", fileDir.c_str(), name.c_str()))){
       file = TFile::Open(Form("%s/%s/%s.root", "root://t3dcachedb.psi.ch:1094/", fileDir.c_str(), name.c_str()));
    }
-  else{
+   else{
       cout << "file not found" << endl;
       //return 0;
       exit(11);
@@ -58,9 +58,9 @@ main(int argc, char *argv[])
    cout << "got the Events tree" << endl;
 
    //Uncomment to add relevant branches of the former tree in the histoFile
-   tree->SetBranchStatus("*", 0);
-   for (auto activeBranchName : {"MET_phi", "MET_pt", "MET_sumEt", "PV_npvs", "Jet_pt", "Jet_eta", "Jet_chHEF", "Jet_neHEF", "Jet_neEmEF" })
-     tree->SetBranchStatus(activeBranchName, 1);
+   //tree->SetBranchStatus("*", 0);
+   //for (auto activeBranchName : {"MET_phi", "MET_pt", "MET_sumEt", "PV_npvs", "Jet_pt", "Jet_eta", "Jet_chHEF", "Jet_neHEF", "Jet_neEmEF", "Jet_chEmEF", "Jet_muEF" })
+   //   tree->SetBranchStatus(activeBranchName, 1);
 
    //system(Form("rm %s/histoFiles/%s", targetDir.c_str(), datasetName.c_str()));
    system(Form( "mkdir -p %s/histoFiles", targetDir.c_str()) );
@@ -109,7 +109,7 @@ main(int argc, char *argv[])
    tree->SetBranchAddress("Jet_chEmEF", &jet_elEF);
    float jet_muEF[999];
    tree->SetBranchAddress("Jet_muEF", &jet_muEF);
-   
+
 
    TH1D *h1_PV_npvs = new TH1D("nVertex", "", 100, 0, 100);
    TH1D *h1_met_phi = new TH1D("MET_phi", "", 64, -3.2, 3.2);
@@ -117,6 +117,7 @@ main(int argc, char *argv[])
    TH1D *h1_met_sumEt = new TH1D("MET_sumEt", "", 64, 0, 10000);
    TH1D *h1_jet_pt  = new TH1D( "Jet_pt" , "", 100, 0., 500. );
    TH1D *h1_jet_eta = new TH1D( "Jet_eta", "", 100, -5., 5. );
+   TH1D *h1_totEF = new TH1D("totEF", "", 100, 0, 1.05);
 
    float etaMax = 5;
    int nBins_eta = 64;
@@ -161,7 +162,7 @@ main(int argc, char *argv[])
       tree->GetEntry( iEntry );
 
       if( iEntry % 1000 == 0 ) std::cout << "  Entry: " << iEntry << " / " << nentries << std::endl;
-      
+
       h1_PV_npvs->Fill( nVert );
       h1_met_phi->Fill( MET_phi );
       h1_met_sumEt->Fill( MET_sumEt );
@@ -191,6 +192,14 @@ main(int argc, char *argv[])
             h2_nhE_vs_eta      ->Fill( jet_eta[ijet], jet_nhEF[ijet]    * jet_pt[ijet] );
             h2_phE_vs_eta      ->Fill( jet_eta[ijet], jet_phEF[ijet]    * jet_pt[ijet] );
          }
+         
+         //filling histo for sum of EF for jet_eta < 1
+         if(abs(jet_eta[ijet]<1)){
+            h1_totEF->Fill(jet_chEF[ijet]+jet_nhEF[ijet]+jet_phEF[ijet]+jet_elEF[ijet]+jet_muEF[ijet] );
+         }
+        //if(jet_chEF[ijet]+jet_nhEF[ijet]+jet_phEF[ijet]+jet_elEF[ijet]+jet_muEF[ijet]<0.8){
+        //    h2_Jet_pt_vs_eta->Fill( jet_eta[ijet], jet_pt[ijet]    );
+        //}
       }
    }
    h2_Jet_pt_vs_eta->ProfileX("Jet_pt_vs_eta");
@@ -211,10 +220,10 @@ main(int argc, char *argv[])
    h2_MET_sumEt_vs_phi->ProfileX("MET_sumEt_vs_phi");
    // Save all objects in this file
    outfile->Write();
-   
+
    file->Close();
    delete file;
-   
-  
+
+
    return 0;
 }

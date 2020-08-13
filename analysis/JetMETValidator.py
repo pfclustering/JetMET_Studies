@@ -39,10 +39,11 @@ from argparse import ArgumentParser
 ### information of file 1 ###
 
 # a) is the file privately produced [yes/no]? 
-isLocal1 = 'no'
+isLocal1 = 'yes'
 
 # -> if yes: 
-prodLabel1 = 'QCD_wPU_noiseCond2023_pfrhRef_seedRef_thrXtalEBXtalEE_shs1.0_maxd10.0_y2023_J4_v3_t0_n50000'
+#prodLabel1 = 'QCD_wPU_noiseCond2023_pfrhRef_seedRef_thrXtalEBXtalEE_shs1.0_maxd10.0_y2023_J4_v3_t0_n50000'
+prodLabel1 = 'QCD_noPU_noiseCond2023_pfrh3.0-4.0_seed3.0-4.0_thrRingEBXtalEE_shs1.0_maxd10.0_y2023_J4_v1_t3-4_n50000'
 
 # -> if no:
 # is it 'Data' or 'MC' ? 
@@ -53,7 +54,7 @@ release1 = 'Run2016B' #'CMSSW_10_6_8'
 tag1 = 'ForValUL2016-v1' # 'FlatPU0to70_106X_mcRun2_asymptotic_preVFP_v3_UL16_CP5_preVFP-v1'
 
 # b) file legend:
-legend1 = 'wPU'
+legend1 = 'noPU'
 
 # c) specific run [insert runId or '-'] ?
 whichRun1 = '-' #'278808' 
@@ -65,7 +66,8 @@ whichRun1 = '-' #'278808'
 isLocal2 = 'yes'
 
 # -> if yes: 
-prodLabel2 = 'QCD_noPU_noiseCond2023_pfrh3.0-4.0_seed3.0-4.0_thrRingEBXtalEE_shs1.0_maxd10.0_y2023_J4_v1_t3-4_n50000'
+#prodLabel2 = 'QCD_noPU_noiseCond2023_pfrh3.0-4.0_seed3.0-4.0_thrRingEBXtalEE_shs1.0_maxd10.0_y2023_J4_v1_t3-4_n50000'
+prodLabel2 = 'QCD_wPU_noiseCond2023_pfrhRef_seedRef_thrXtalEBXtalEE_shs1.0_maxd10.0_y2023_J4_v3_t0_n50000'
 
 # -> if no:
 # is it 'Data' or 'MC' ? 
@@ -76,7 +78,7 @@ release2 = 'CMSSW_10_6_8' #'Run2016B'
 tag2 = 'FlatPU0to70_106X_mcRun2_asymptotic_v9_UL16_CP5_postVFP-v2' #'ForValUL2016-v1'
 
 # b) file legend:
-legend2 = 'noPU'
+legend2 = 'wPU'
 
 # c) specific run [insert runId or '-'] ?
 whichRun2 = '-'
@@ -103,7 +105,7 @@ doPlotterOnly = False
 
 
 
-# first, get the parsed argument, if exisiting
+# first, get the parsed argument, if existing
 parser = ArgumentParser(description='Script to produce the command to run the JetMET validation tools', add_help=True)
 parser.add_argument('--printOnly', dest='printOnly', help='add this option in case you want the script to only print the command without executing it', action='store_true', default=False)
 option =  parser.parse_args()
